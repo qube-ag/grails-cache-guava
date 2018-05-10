@@ -8,10 +8,11 @@ class GrailsCacheGuavaGrailsPlugin extends Plugin {
     def grailsVersion = "3.3.5 > *"
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
-        "grails-app/views/error.gsp"
+        '**/com/demo/**',
+        'grails-app/views/**',
+        '**/*.gsp'
     ]
 
-    // TODO Fill in these fields
     def title = "Grails Cache Guava" // Headline display name of the plugin
     def author = "Moritz Kobel"
     def authorEmail = "moritz@kobelnet.ch"

@@ -81,3 +81,12 @@ grails:
 endpoints:
     jmx:
         unique-names: true
+---
+grails:
+    cache:
+        guava:
+            defaultTtl: 3600
+            caches:
+                demo:
+                    maxCapacity: 10
+                    ttl: 10
