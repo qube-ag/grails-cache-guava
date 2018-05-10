@@ -9,7 +9,7 @@ buildscript {
 }
 
 version "0.1"
-group "grails.cache.guava"
+group "org.grails.plugins"
 
 apply plugin:"eclipse"
 apply plugin:"idea"
