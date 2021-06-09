@@ -34,9 +34,7 @@ dependencies {
     console "org.grails:grails-console"
     profile "org.grails.profiles:web-plugin"
     provided "org.grails:grails-plugin-services"
-    provided "org.grails:grails-plugin-domain-class"
 
-    testCompile "org.grails:grails-datastore-gorm-test"
     testCompile "org.grails:grails-plugin-testing"
     testCompile "org.grails:grails-web-testing-support"
     testCompile "org.grails.plugins:geb"
@@ -45,8 +43,7 @@ dependencies {
 
     compile "org.grails.plugins:cache:4.0.0"
 
-    compile 'com.google.guava:guava:25.0-jre'
-
+    compile "com.google.guava:guava:30.1.1-jre"
 }
 
 bootRun {
@@ -65,6 +62,6 @@ grailsPublish {
     }
     title = project.name
     desc = "The guava cache provides a simple in memory cache with maximal capacity and TTL."
-    developers = [mkobel:"Moritz obel"]
+    developers = [mkobel:"Moritz obel", sbglasius: 'Søren Berg Glasius']
 }
 
