@@ -29,44 +29,47 @@ import java.util.concurrent.ConcurrentMap
  */
 @CompileStatic
 class GrailsGuavaCacheManager implements GrailsCacheManager {
-   protected final ConcurrentMap<String, Cache> cacheMap = new ConcurrentHashMap<String, Cache>()
-   final static int DEFAULT_TTL = 3600
+	final static int DEFAULT_TTL = 3600
+	final static int DEFAULT_MAX_CAPACITY = 10_000
+	final static boolean DEFAULT_ALLOW_NULL_VALUES = true
 
-   Collection<String> getCacheNames() {
-      return Collections.unmodifiableSet(cacheMap.keySet())
-   }
+	protected final ConcurrentMap<String, Cache> cacheMap = new ConcurrentHashMap<String, Cache>()
 
-   Cache getCache(String name) {
-      return getCache(name, 10000, DEFAULT_TTL)
-   }
+	CacheGuavaPluginConfiguration configuration
 
-   Cache getCache(String name, int capacity, Integer ttl) {
-      Cache cache = cacheMap.get(name)
-      if (cache == null) {
-         cache = createGuavaCache(name, capacity, ttl ?: DEFAULT_TTL)
-         Cache existing = cacheMap.putIfAbsent(name, cache)
-         if (existing != null) {
-            cache = existing
-         }
-      }
-      return cache
-   }
+	Collection<String> getCacheNames() {
+		return Collections.unmodifiableSet(cacheMap.keySet())
+	}
 
-   boolean cacheExists(String name) {
-      getCacheNames().contains(name)
-   }
+	Cache getCache(String name) {
+		return createCache(name)
+	}
 
-   boolean destroyCache(String name) {
-      cacheMap.remove(name) != null
-   }
+	boolean cacheExists(String name) {
+		getCacheNames().contains(name)
+	}
 
-   protected GrailsGuavaCache createGuavaCache(String name, int capacity, int ttl) {
-      return new GrailsGuavaCache(name, capacity, ttl)
-   }
+	boolean destroyCache(String name) {
+		cacheMap.remove(name) != null
+	}
 
-   void setConfiguration(CacheGuavaPluginConfiguration configuration) {
-      configuration.caches.each { String key, CacheGuavaPluginConfiguration.CacheGruavaConfig value ->
-         getCache(key, value.maxCapacity, value.ttl ?: configuration.defaultTtl)
-      }
-   }
+	protected Cache createCache(String name) {
+		Cache cache = cacheMap.get(name)
+		if (cache == null) {
+			CacheGuavaPluginConfiguration.CacheGruavaConfig config = configuration.caches[name]
+			int maxCapacity = config?.maxCapacity ?: configuration.defaultMaxCapacity ?: DEFAULT_MAX_CAPACITY
+			int ttl = config?.ttl ?: configuration.defaultTtl ?: DEFAULT_TTL
+			boolean allowNullValues = config?.allowNullValues != null ? config.allowNullValues : (configuration.defaultAllowNullValues != null ? configuration.defaultAllowNullValues : DEFAULT_ALLOW_NULL_VALUES)
+			cache = createGuavaCache(name, maxCapacity, ttl, allowNullValues)
+			Cache existing = cacheMap.putIfAbsent(name, cache)
+			if (existing != null) {
+				cache = existing
+			}
+		}
+		return cache
+	}
+
+	protected static GrailsGuavaCache createGuavaCache(String name, int capacity, int ttl, boolean allowNullValues = DEFAULT_ALLOW_NULL_VALUES) {
+		return new GrailsGuavaCache(name, capacity, ttl, allowNullValues)
+	}
 }

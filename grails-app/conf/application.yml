@@ -85,8 +85,15 @@ endpoints:
 grails:
     cache:
         guava:
-            defaultTtl: 3600
+            defaultTtl: 300
+            defaultMaxCapacity: 2000
             caches:
                 demo:
                     maxCapacity: 10
                     ttl: 10
+                cache1:
+                    ttl: 10
+                cache2:
+                    maxCapacity: 20
+                cache3:
+                    allowNullValues: false

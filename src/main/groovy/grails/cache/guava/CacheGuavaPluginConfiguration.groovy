@@ -7,12 +7,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties(value = 'grails.cache.guava', ignoreInvalidFields = true)
 class CacheGuavaPluginConfiguration {
 
-    Boolean clearAtStartup = false
     Map<String, CacheGruavaConfig> caches = [:]
     Integer defaultTtl
+    Integer defaultMaxCapacity
+    Boolean defaultAllowNullValues
 
     static class CacheGruavaConfig {
         Integer maxCapacity
         Integer ttl
+        Boolean allowNullValues
     }
 }
