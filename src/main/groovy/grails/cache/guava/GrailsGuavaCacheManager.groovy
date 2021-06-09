@@ -56,7 +56,7 @@ class GrailsGuavaCacheManager implements GrailsCacheManager {
 	protected Cache createCache(String name) {
 		Cache cache = cacheMap.get(name)
 		if (cache == null) {
-			CacheGuavaPluginConfiguration.CacheGruavaConfig config = configuration.caches[name]
+			CacheGuavaPluginConfiguration.CacheGuavaConfig config = configuration.caches[name]
 			int maxCapacity = config?.maxCapacity ?: configuration.defaultMaxCapacity ?: DEFAULT_MAX_CAPACITY
 			int ttl = config?.ttl ?: configuration.defaultTtl ?: DEFAULT_TTL
 			boolean allowNullValues = config?.allowNullValues != null ? config.allowNullValues : (configuration.defaultAllowNullValues != null ? configuration.defaultAllowNullValues : DEFAULT_ALLOW_NULL_VALUES)
